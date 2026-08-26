@@ -10,9 +10,8 @@ from PySide6.QtCore import QObject, QTimer, Signal
 
 from app.services.rate_limiter import TokenBucket
 
-try:  # 抑制 HTTPS verify=False 产生的大量警告
+try:  # 仅在用户显式禁用 SSL 验证时抑制警告
     import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 except Exception:
     pass
 
@@ -199,7 +198,10 @@ class StressEngine(QObject):
                     if not ok:
                         err = f"HTTP {r.status_code}"
                 elif proto == "HTTPS":
-                    r = session.get(c["url"], timeout=timeout, headers=c.get("headers"), verify=False)
+                    # 安全默认：验证 SSL 证书
+                    # 可通过 config["verify_ssl"] = False 禁用（仅用于测试自签名证书的目标）
+                    verify_ssl = c.get("verify_ssl", True)
+                    r = session.get(c["url"], timeout=timeout, headers=c.get("headers"), verify=verify_ssl)
                     ok = r.status_code < 400
                     nbytes = _http_req_bytes(r)
                     if not ok:
