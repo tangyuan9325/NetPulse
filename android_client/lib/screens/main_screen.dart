@@ -59,40 +59,42 @@ class _MainScreenState extends State<MainScreen> {
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: SafeArea(
-        child: NavigationBar(
-          selectedIndex: _currentIndex,
-          onDestinationSelected: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          backgroundColor: isDark ? AppColors.darkCard : AppColors.lightCard,
-          indicatorColor: AppColors.primary.withOpacity(0.15),
-          elevation: 8,
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.dashboard_outlined),
-              selectedIcon: const Icon(Icons.dashboard, color: AppColors.primary),
-              label: isChinese ? '仪表盘' : 'Dashboard',
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.speed_outlined),
-              selectedIcon: const Icon(Icons.speed, color: AppColors.primary),
-              label: isChinese ? '压测' : 'Stress',
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.group_outlined),
-              selectedIcon: const Icon(Icons.group, color: AppColors.primary),
-              label: isChinese ? '协同' : 'Collab',
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.settings_outlined),
-              selectedIcon: const Icon(Icons.settings, color: AppColors.primary),
-              label: isChinese ? '设置' : 'Settings',
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.lightCard,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        elevation: 8,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.dashboard_outlined),
+            activeIcon: const Icon(Icons.dashboard),
+            label: isChinese ? '仪表盘' : 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.speed_outlined),
+            activeIcon: const Icon(Icons.speed),
+            label: isChinese ? '压测' : 'Stress',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.group_outlined),
+            activeIcon: const Icon(Icons.group),
+            label: isChinese ? '协同' : 'Collab',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings_outlined),
+            activeIcon: const Icon(Icons.settings),
+            label: isChinese ? '设置' : 'Settings',
+          ),
+        ],
       ),
     );
   }
