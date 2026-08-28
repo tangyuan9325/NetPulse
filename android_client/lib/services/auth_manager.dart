@@ -24,20 +24,30 @@ class AuthManager extends ChangeNotifier {
 
     final targetsJson = prefs.getString(AppConstants.keyAuthorizedTargets);
     if (targetsJson != null) {
-      final List<dynamic> decoded = jsonDecode(targetsJson);
-      _authorizedTargets.clear();
-      _authorizedTargets.addAll(
-        decoded.map((e) => TargetAuthorization.fromJson(e as Map<String, dynamic>)),
-      );
+      try {
+        final List<dynamic> decoded = jsonDecode(targetsJson);
+        _authorizedTargets.clear();
+        _authorizedTargets.addAll(
+          decoded.map((e) => TargetAuthorization.fromJson(e as Map<String, dynamic>)),
+        );
+      } catch (_) {
+        // Corrupted data - reset to empty
+        _authorizedTargets.clear();
+      }
     }
 
     final logsJson = prefs.getString(AppConstants.keyAuditLogs);
     if (logsJson != null) {
-      final List<dynamic> decoded = jsonDecode(logsJson);
-      _auditLogs.clear();
-      _auditLogs.addAll(
-        decoded.map((e) => AuditLogEntry.fromJson(e as Map<String, dynamic>)),
-      );
+      try {
+        final List<dynamic> decoded = jsonDecode(logsJson);
+        _auditLogs.clear();
+        _auditLogs.addAll(
+          decoded.map((e) => AuditLogEntry.fromJson(e as Map<String, dynamic>)),
+        );
+      } catch (_) {
+        // Corrupted data - reset to empty
+        _auditLogs.clear();
+      }
     }
 
     notifyListeners();

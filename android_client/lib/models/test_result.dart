@@ -125,8 +125,8 @@ class TestResult {
     this.avgQps = 0,
     this.totalBytesSent = 0,
     this.totalBytesReceived = 0,
-    this.latency = const LatencyStats.empty(),
-    this.errors = const ErrorStats.empty(),
+    this.latency = const LatencyStats(p50: 0, p90: 0, p99: 0, min: 0, max: 0, avg: 0),
+    this.errors = const ErrorStats(total: 0, byType: {}),
     this.isRunning = false,
   });
 

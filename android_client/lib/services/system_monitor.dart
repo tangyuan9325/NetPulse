@@ -97,8 +97,14 @@ class SystemMonitor extends ChangeNotifier {
 
   Future<Map<String, int>> _getMemoryInfo() async {
     try {
-      final result = await Process.run('cat', ['/proc/meminfo']);
-      final output = result.stdout as String;
+      final File memInfoFile = File('/proc/meminfo');
+      if (!memInfoFile.existsSync()) {
+        return {
+          'total': 8 * 1024 * 1024 * 1024,
+          'used': 4 * 1024 * 1024 * 1024,
+        };
+      }
+      final output = await memInfoFile.readAsString();
       int total = 0;
       int available = 0;
 
@@ -124,8 +130,11 @@ class SystemMonitor extends ChangeNotifier {
 
   Future<Map<String, int>> _getNetworkStats() async {
     try {
-      final result = await Process.run('cat', ['/proc/net/dev']);
-      final output = result.stdout as String;
+      final File netDevFile = File('/proc/net/dev');
+      if (!netDevFile.existsSync()) {
+        return {'sent': 0, 'received': 0};
+      }
+      final output = await netDevFile.readAsString();
       int totalSent = 0;
       int totalReceived = 0;
 

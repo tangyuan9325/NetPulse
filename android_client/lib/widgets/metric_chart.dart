@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../theme/colors.dart';
 
 class MetricChart extends StatelessWidget {
   final List<double> data;

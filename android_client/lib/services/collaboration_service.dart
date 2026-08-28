@@ -135,8 +135,14 @@ class CollaborationService extends ChangeNotifier {
   void _handleNodeConnection(Socket socket) {
     socket.listen(
       (data) {
-        final message = jsonDecode(utf8.decode(data));
-        _handleNodeMessage(socket, message);
+        try {
+          final message = jsonDecode(utf8.decode(data));
+          if (message is Map<String, dynamic>) {
+            _handleNodeMessage(socket, message);
+          }
+        } catch (_) {
+          // Ignore malformed messages
+        }
       },
       onDone: () {
         // Node disconnected
@@ -173,19 +179,23 @@ class CollaborationService extends ChangeNotifier {
   }
 
   void _handleHostMessage(dynamic data) {
-    final message = jsonDecode(data);
-    switch (message['type']) {
-      case 'test_config':
-        // Host sent test configuration
-        break;
-      case 'start_test':
-        _status = CollabStatus.testing;
-        notifyListeners();
-        break;
-      case 'stop_test':
-        _status = CollabStatus.connected;
-        notifyListeners();
-        break;
+    try {
+      final message = jsonDecode(data);
+      switch (message['type']) {
+        case 'test_config':
+          // Host sent test configuration
+          break;
+        case 'start_test':
+          _status = CollabStatus.testing;
+          notifyListeners();
+          break;
+        case 'stop_test':
+          _status = CollabStatus.connected;
+          notifyListeners();
+          break;
+      }
+    } catch (_) {
+      // Ignore malformed messages
     }
   }
 

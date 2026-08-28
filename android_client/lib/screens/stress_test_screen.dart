@@ -295,8 +295,8 @@ class _StressTestScreenState extends State<StressTestScreen> {
       children: [
         _buildMetricTile('QPS', Formatters.formatQps(result.currentQps), AppColors.primary),
         _buildMetricTile('总请求', Formatters.formatNumber(result.totalRequests), AppColors.accent),
-        _buildMetricTile('成功', '${result.successCount} (${Formatters.formatPercent(result.successRate)}%)', AppColors.success),
-        _buildMetricTile('失败', '${result.failedCount} (${Formatters.formatPercent(result.errorRate)}%)', AppColors.danger),
+        _buildMetricTile('成功', '${result.successCount} (${result.successRate.toStringAsFixed(1)}%)', AppColors.success),
+        _buildMetricTile('失败', '${result.failedCount} (${result.errorRate.toStringAsFixed(1)}%)', AppColors.danger),
         _buildMetricTile('已用时', Formatters.formatDuration(result.elapsed), AppColors.warning),
         _buildMetricTile('总流量', Formatters.formatBytes(result.totalBytesSent + result.totalBytesReceived), AppColors.primaryDark),
       ],

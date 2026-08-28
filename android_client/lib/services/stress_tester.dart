@@ -133,15 +133,15 @@ class StressTester extends ChangeNotifier {
 
     // Calculate latency percentiles
     final latencies = List<int>.from(_latencySamples)..sort();
-    int p50 = 0, p90 = 0, p99 = 0, min = 0, max = 0;
+    int p50 = 0, p90 = 0, p99 = 0, minLatency = 0, maxLatency = 0;
     double avg = 0;
 
     if (latencies.isNotEmpty) {
       p50 = _percentile(latencies, 50);
       p90 = _percentile(latencies, 90);
       p99 = _percentile(latencies, 99);
-      min = latencies.first;
-      max = latencies.last;
+      minLatency = latencies.first;
+      maxLatency = latencies.last;
       avg = latencies.reduce((a, b) => a + b) / latencies.length;
     }
 
@@ -157,8 +157,8 @@ class StressTester extends ChangeNotifier {
         p50: p50,
         p90: p90,
         p99: p99,
-        min: min,
-        max: max,
+        min: minLatency,
+        max: maxLatency,
         avg: avg,
       ),
     );
